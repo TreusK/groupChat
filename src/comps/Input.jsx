@@ -13,9 +13,15 @@ function Input({onSendMessage}) {
     setInput('');
   }
 
+  function handleEnter(e) {
+    if(e.key == 'Enter') {
+      handleSendClick();
+    }
+  }
+
   return (
-    <div className='bg-gray-300 p-2 flex justify-between h-16'>
-      <input className='p-2' type="text" value={input} onChange={handleInputChange}/>
+    <div className='bg-gray-800 p-2 flex justify-between h-16'>
+      <input className='text-black p-2 mr-2 flex-1' type="text" value={input} onChange={handleInputChange} onKeyDown={handleEnter}/>
       <button className='border border-solid bg-blue-300 text-white p-2' onClick={handleSendClick}>Send</button>
     </div>
   )
