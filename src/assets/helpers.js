@@ -3,6 +3,7 @@
 function isMessageValid(message) {
   if (message.length === 0) return false;
   if (message.trim().length == 0) return false;
+  if (message.includes('<script>')) return false;
   return true;
 }
 

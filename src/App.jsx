@@ -62,14 +62,12 @@ function App() {
 
   return (
     <div className='contentContainer bg-zinc-100 min-h-screen min-w-[250px]'>
-      <div className='bg-stone-600 h-16'>
-      </div>
 
-      <h1 className='text-4xl mt-16 mb-4 mx-auto w-fit text-center'>Group Chat with strangers!</h1>
+      <h1 className='text-4xl pt-16 mb-4 mx-auto w-fit text-center'>Group Chat with strangers!</h1>
       <div className='bg-black w-[300px] h-1 mx-auto mb-12'></div>
 
       <div className='bg-gray-100/80 w-1/2 mx-auto my-6 text-center p-12'>
-        <p className='mb-4'>Like WhatsApp, but without facebook!</p>
+        <p className='mb-4'>Like WhatsApp, but better!</p>
         <p className='text-left'>Featuring:</p>
         <ul className='text-left pl-4'>
           <li>Unique Ids!</li>
