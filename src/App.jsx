@@ -4,7 +4,7 @@ import axios from 'axios';
 import { isMessageValid, getRandomArbitrary } from './assets/helpers';
 import chatIcon from './assets/chatIcon.png';
 import Input from './comps/Input';
-import { MdDeleteForever } from 'react-icons/md';
+import { RiCloseCircleFill } from 'react-icons/ri';
 import AlwaysScrollToBottom from './comps/AlwaysScrollToBottom';
 import SimpleCard from './comps/SimpleCard';
 
@@ -84,20 +84,20 @@ function App() {
   return (
     <div className='contentContainer bg-[#F7F7F7] text-[#202020] min-h-screen min-w-[250px]'>
 
-      <div className='flex flex-col items-center py-24'>
+      <div className='flex flex-col items-center py-24 h-[50vh]'>
         <img className='-mb-12 -ml-8' src={chatIcon} alt="chatIcon" />
         <h1 className='text-4xl h-fit'>Group Chat</h1>
       </div>
 
-      <div className='bg-[#8D8E8F] text-[#F7F7F7] rounded mx-auto my-6 text-center p-12'>
-        <div className='bg-white mx-auto w-4/5 flex justify-around'>
+      <div className='text-[#202020] flex justify-center text-center p-12'>
+        <div className='flex flex-col justify-around items-center gap-8 md:gap-0 w-full max-w-5xl md:flex-row'>
           <SimpleCard icon='flag'/>
           <SimpleCard icon='star'/>
           <SimpleCard icon='desktop'/>
         </div>
       </div>
 
-      <main className='bg-[#F3F4F5] py-4'>
+      <main className='bg-[#F3F4F5] pt-16 pb-6'>
         <div className='text-gray-300 h-[calc(100vh-64px)] flex flex-col justify-between max-w-[800px] mx-auto'>
           <div className='messagesContainer flex flex-col justify-end overflow-auto grow'>
             {notes &&
@@ -108,7 +108,7 @@ function App() {
                       key={note.id}>
                       <div className='flex'>
                         <p className='text-[10px] select-none'>user {note.userId}</p>
-                        {note.content !== '-Message Deleted-' && <MdDeleteForever className='-z-10 group-hover:z-10 cursor-pointer text-red-700 ml-auto' onClick={() => handleDeleteMessage(note)}/>}
+                        {note.content !== '-Message Deleted-' && <RiCloseCircleFill className='-z-10 group-hover:z-10 cursor-pointer text-red-700 ml-auto -mr-3 -mt-1' onClick={() => handleDeleteMessage(note)}/>}
                       </div>
                       {note.content}
                     </li>
@@ -129,7 +129,7 @@ function App() {
       </main>
 
       <footer className='bg-[#202020] text-[#F7F7F7] text-xs p-2 px-6 flex flex-col items-end'>
-        <p>Copyright FL&Co Incorporated</p>
+        <p>Copyright meme&Co Incorporated</p>
         <p>Donut steel</p>
       </footer>
 
