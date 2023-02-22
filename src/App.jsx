@@ -15,9 +15,6 @@ function App() {
   const [userId, setUserId] = useState(null);
   const [jumpToBottom, setJumpToBottom] = useState(false);
 
-  let userMessageStyle = ' ml-auto bg-green-900 ';
-  let otherMessageStyle = ' mr-auto bg-gray-700 ';
-
   //get notes from server and userId if it exists
   useEffect(() => {
     axios
@@ -90,16 +87,16 @@ function App() {
       </div>
 
       <div className='text-[#202020] flex justify-center text-center p-12'>
-        <div className='flex flex-col justify-around items-center gap-8 md:gap-0 w-full max-w-5xl md:flex-row'>
+        <div className='flex flex-col justify-around items-center gap-6 md:gap-0 w-full max-w-5xl md:flex-row'>
           <SimpleCard icon='flag'/>
           <SimpleCard icon='star'/>
           <SimpleCard icon='desktop'/>
         </div>
       </div>
 
-      <main className='bg-[#F3F4F5] pt-16 pb-6'>
+      <main className='bg-[#d4d4d4] pt-16 pb-6'>
         <div className='text-gray-300 h-[calc(100vh-64px)] flex flex-col justify-between max-w-[800px] mx-auto'>
-          <div className='messagesContainer flex flex-col justify-end overflow-auto grow'>
+          <div className='messagesContainer flex flex-col justify-end overflow-auto grow rounded-t-md'>
             {notes &&
               <ul className='overflow-auto break-words pt-4'>
                 {notes.map(note =>
@@ -129,8 +126,8 @@ function App() {
       </main>
 
       <footer className='bg-[#202020] text-[#F7F7F7] text-xs p-2 px-6 flex flex-col items-end'>
-        <p>Copyright meme&Co Incorporated</p>
-        <p>Donut steel</p>
+        <p>Copyright FL&Co Incorporated</p>
+        <p>2023</p>
       </footer>
 
     </div>

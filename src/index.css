@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: 'Ubuntu', sans-serif;
+}
 
 .messagesContainer {
   background-color: #1b1c1b;
