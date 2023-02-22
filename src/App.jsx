@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+
 import { isMessageValid, getRandomArbitrary } from './assets/helpers';
+import chatIcon from './assets/chatIcon.png';
 import Input from './comps/Input';
+import { MdDeleteForever } from 'react-icons/md';
 import AlwaysScrollToBottom from './comps/AlwaysScrollToBottom';
+import SimpleCard from './comps/SimpleCard';
 
 const baseUrl = 'http://localhost:3002/api/notes';
 
@@ -42,58 +46,89 @@ function App() {
       return;
     }
 
-    if(!jumpToBottom) {
+    if (!jumpToBottom) {
       setJumpToBottom(true);
     }
 
     let messageObj = {
       content: message,
-      userId: userId
+      userId: +userId
     }
     axios
       .post(baseUrl, messageObj)
       .then(res => {
-        setNotes(notes.concat(res.data))
+        //notes limited to 100, both here and in the backend
+        if(notes.length > 100) {
+          setNotes(notes.slice(1).concat(res.data))
+        } else {
+          setNotes(notes.concat(res.data))
+        }
       })
       .catch(err => {
         alert('Posting failed with error: ' + err)
       })
   }
 
+  function handleDeleteMessage(note) {
+    let noteId = note.id;
+    let changeNoteUrl = baseUrl + `/${noteId}`;
+    let modifiedNote = {...note, content: '-Message Deleted-'};
+
+    axios
+      .put(changeNoteUrl, modifiedNote)
+      .then(res => {
+        setNotes(notes.map(n => n.id !== noteId ? n : res.data))
+      })
+  }
+
   return (
-    <div className='contentContainer bg-zinc-100 min-h-screen min-w-[250px]'>
+    <div className='contentContainer bg-[#F7F7F7] text-[#202020] min-h-screen min-w-[250px]'>
 
-      <h1 className='text-4xl pt-16 mb-4 mx-auto w-fit text-center'>Group Chat with strangers!</h1>
-      <div className='bg-black w-[300px] h-1 mx-auto mb-12'></div>
-
-      <div className='bg-gray-100/80 w-1/2 mx-auto my-6 text-center p-12'>
-        <p className='mb-4'>Like WhatsApp, but better!</p>
-        <p className='text-left'>Featuring:</p>
-        <ul className='text-left pl-4'>
-          <li>Unique Ids!</li>
-          <li>Img uploading</li>
-          <li>Emoticons!</li>
-        </ul>
+      <div className='flex flex-col items-center py-24'>
+        <img className='-mb-12 -ml-8' src={chatIcon} alt="chatIcon" />
+        <h1 className='text-4xl h-fit'>Group Chat</h1>
       </div>
 
-      <main className='text-gray-300 h-[calc(100vh-64px)] flex flex-col justify-between max-w-[800px] mx-auto'>
-        <div className='messagesContainer flex flex-col justify-end overflow-auto grow'>
-          {notes &&
-            <ul className='overflow-auto break-words pt-4'>
-              {notes.map(note =>
-                <li className={`border-gray-500 rounded border border-solid p-2 pt-0 mb-2 mx-2 w-fit max-w-[80%] ${note.userId == userId ? userMessageStyle : otherMessageStyle}`}
-                  key={note.id}>
-                  <p className='text-[10px]'>user {note.userId}</p>
-                  {note.content}
-                </li>
-              )}
-              {jumpToBottom && <AlwaysScrollToBottom />}
-            </ul>}
+      <div className='bg-[#8D8E8F] text-[#F7F7F7] rounded mx-auto my-6 text-center p-12'>
+        <div className='bg-white mx-auto w-4/5 flex justify-around'>
+          <SimpleCard icon='flag'/>
+          <SimpleCard icon='star'/>
+          <SimpleCard icon='desktop'/>
         </div>
-        <Input onSendMessage={handleSendMessage} />
+      </div>
+
+      <main className='bg-[#F3F4F5] py-4'>
+        <div className='text-gray-300 h-[calc(100vh-64px)] flex flex-col justify-between max-w-[800px] mx-auto'>
+          <div className='messagesContainer flex flex-col justify-end overflow-auto grow'>
+            {notes &&
+              <ul className='overflow-auto break-words pt-4'>
+                {notes.map(note =>
+                  note.userId == userId
+                    ? <li className={`border-gray-500 rounded border border-solid group p-2 pt-0 mb-2 mx-2 w-fit max-w-[80%] ml-auto bg-green-900`}
+                      key={note.id}>
+                      <div className='flex'>
+                        <p className='text-[10px] select-none'>user {note.userId}</p>
+                        {note.content !== '-Message Deleted-' && <MdDeleteForever className='-z-10 group-hover:z-10 cursor-pointer text-red-700 ml-auto' onClick={() => handleDeleteMessage(note)}/>}
+                      </div>
+                      {note.content}
+                    </li>
+
+                    : <li className={`border-gray-500 rounded border border-solid p-2 pt-0 mb-2 mx-2 w-fit max-w-[80%] mr-auto bg-gray-700`}
+                      key={note.id + '' + note.userId}>
+                      <div className='flex'>
+                        <p className='text-[10px] select-none'>user {note.userId}</p>
+                      </div>
+                      {note.content}
+                    </li>
+                )}
+                {jumpToBottom && <AlwaysScrollToBottom />}
+              </ul>}
+          </div>
+          <Input onSendMessage={handleSendMessage} />
+        </div>
       </main>
-      
-      <footer className='bg-sky-800 text-gray-200 text-xs p-2 px-6 mt-2 flex flex-col items-end'>
+
+      <footer className='bg-[#202020] text-[#F7F7F7] text-xs p-2 px-6 flex flex-col items-end'>
         <p>Copyright FL&Co Incorporated</p>
         <p>Donut steel</p>
       </footer>

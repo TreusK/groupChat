@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.contentContainer {
-  background-image: linear-gradient(-60deg, #6c3 50%, #09f 55%);
-}
 
 .messagesContainer {
   background-color: #1b1c1b;
