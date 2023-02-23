@@ -8,7 +8,7 @@ import { RiCloseCircleFill } from 'react-icons/ri';
 import AlwaysScrollToBottom from './comps/AlwaysScrollToBottom';
 import SimpleCard from './comps/SimpleCard';
 
-const baseUrl = 'http://localhost:3002/api/notes';
+const baseUrl = '/api/notes';
 
 function App() {
   const [notes, setNotes] = useState([]);
