@@ -1,14 +1,20 @@
+//libraries
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { io } from "socket.io-client";
+import { RiCloseCircleFill } from 'react-icons/ri';
 
+//local stuff
 import { isMessageValid, getRandomArbitrary } from './assets/helpers';
 import chatIcon from './assets/chatIcon.png';
 import Input from './comps/Input';
-import { RiCloseCircleFill } from 'react-icons/ri';
 import AlwaysScrollToBottom from './comps/AlwaysScrollToBottom';
 import SimpleCard from './comps/SimpleCard';
 
-const baseUrl = '/api/notes';
+//const baseUrlOnProduction = '/api/notes';
+const baseUrl = 'http://localhost:3002/api/notes';
+const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3002';
+const socket = io(URL);
 
 function App() {
   const [notes, setNotes] = useState([]);
@@ -35,6 +41,18 @@ function App() {
     }
   }, [])
 
+  //receive messages 
+  useEffect(() => {
+    function onMessageResponse(data) {
+      setNotes(oldNotes => [...oldNotes, data])
+    }
+    socket.on('messageResponse', onMessageResponse);
+
+    return () => {
+      socket.off('messageResponse', onMessageResponse);
+    };
+  }, [notes])
+
 
   //event functions
   function handleSendMessage(message) {
@@ -51,19 +69,9 @@ function App() {
       content: message,
       userId: +userId
     }
-    axios
-      .post(baseUrl, messageObj)
-      .then(res => {
-        //notes limited to 100, both here and in the backend
-        if(notes.length > 100) {
-          setNotes(notes.slice(1).concat(res.data))
-        } else {
-          setNotes(notes.concat(res.data))
-        }
-      })
-      .catch(err => {
-        alert('Posting failed with error: ' + err)
-      })
+    
+    socket.emit('message', messageObj)
+
   }
 
   function handleDeleteMessage(note) {
