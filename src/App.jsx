@@ -11,9 +11,8 @@ import Input from './comps/Input';
 import AlwaysScrollToBottom from './comps/AlwaysScrollToBottom';
 import SimpleCard from './comps/SimpleCard';
 
-//const baseUrlOnProduction = '/api/notes';
-const baseUrl = 'http://localhost:3002/api/notes';
-const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3002';
+const baseUrl = '/api/notes';
+const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3001';
 const socket = io(URL);
 
 function App() {
