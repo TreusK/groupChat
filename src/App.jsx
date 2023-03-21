@@ -46,10 +46,15 @@ function App() {
     function onMessageResponse(data) {
       setNotes(oldNotes => [...oldNotes, data])
     }
+    function onMessageDelete(data) {
+      setNotes(data)
+    }
     socket.on('messageResponse', onMessageResponse);
+    socket.on('messageDelete', onMessageDelete);
 
     return () => {
       socket.off('messageResponse', onMessageResponse);
+      socket.off('messageDelete', onMessageDelete);
     };
   }, [notes])
 
@@ -61,6 +66,7 @@ function App() {
       return;
     }
 
+    //jumpToBottom starts false so that it only jumps when you send a message
     if (!jumpToBottom) {
       setJumpToBottom(true);
     }
@@ -84,6 +90,7 @@ function App() {
       .then(res => {
         setNotes(notes.map(n => n.id !== noteId ? n : res.data))
       })
+      .then(() => socket.emit('delete'))
   }
 
   return (
