@@ -46,7 +46,7 @@ function App() {
       setNotes(oldNotes => [...oldNotes, data])
     }
     function onMessageDelete(data) {
-      setNotes(data)
+      setNotes(notes.map(n => n.id !== data.id ? n : data));
     }
     socket.on('messageResponse', onMessageResponse);
     socket.on('messageDelete', onMessageDelete);
@@ -64,19 +64,16 @@ function App() {
       console.log('not valid!')
       return;
     }
-
     //jumpToBottom starts false so that it only jumps when you send a message
     if (!jumpToBottom) {
       setJumpToBottom(true);
     }
-
     let messageObj = {
       content: message,
       userId: +userId
     }
     
     socket.emit('message', messageObj)
-
   }
 
   function handleDeleteMessage(note) {
@@ -87,9 +84,9 @@ function App() {
     axios
       .put(changeNoteUrl, modifiedNote)
       .then(res => {
-        setNotes(notes.map(n => n.id !== noteId ? n : res.data))
+        setNotes(notes.map(n => n.id !== noteId ? n : res.data));
+        socket.emit('delete', res.data)
       })
-      .then(() => socket.emit('delete'))
   }
 
   return (
